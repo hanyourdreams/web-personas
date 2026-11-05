@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portfolio // Masbol</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{--red:#e60012;--deep:#8a0010;--ink:#0d0d0d;--paper:#f5f1e8;--w:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%;margin:0;background:var(--ink);color:var(--w);overflow:hidden}
+body{font-family:'Special Elite',Georgia,serif;
+background:repeating-linear-gradient(115deg,var(--red) 0 38px,var(--deep) 38px 76px)}
+.stage{position:relative;height:100%;overflow:hidden}
+.glass{position:absolute;inset:0 0 0 auto;width:52%;background:var(--red);
+clip-path:polygon(24% 0,100% 0,100% 100%,0 100%);
+background-image:
+linear-gradient(60deg,transparent 48%,rgba(0,0,0,.55) 48.4% 49%,transparent 49.4%),
+linear-gradient(-20deg,transparent 60%,rgba(0,0,0,.55) 60.3% 60.9%,transparent 61.2%),
+linear-gradient(130deg,transparent 30%,rgba(0,0,0,.5) 30.3% 30.8%,transparent 31.1%),
+linear-gradient(10deg,transparent 40%,rgba(0,0,0,.5) 40.3% 40.8%,transparent 41.1%)}
+.glass::after{content:"";position:absolute;left:0;top:0;bottom:0;width:10px;background:var(--w);transform:skewX(-14deg);transform-origin:top}
+.tag{position:absolute;background:var(--ink);color:var(--w);font:12px/1 'Special Elite',monospace;padding:7px 12px;letter-spacing:.05em}
+.tag.tl{top:18px;left:0;transform:rotate(-2deg)}
+.tag.tr{top:18px;right:0;transform:rotate(1.5deg);background:var(--paper);color:var(--ink)}
+.title{position:absolute;left:5%;top:15%;width:min(560px,60%)}
+.title small{display:inline-block;background:var(--ink);padding:5px 10px;font-size:12px;transform:rotate(-2deg);margin-bottom:10px}
+.ransom{font-family:'Anton',Impact,sans-serif;line-height:1.05;display:flex;flex-wrap:wrap}
+.ransom span{display:inline-block;padding:0 .12em;margin:0 1px;font-size:inherit}
+.ransom .a{background:var(--w);color:var(--ink)}.ransom .b{background:var(--ink);color:var(--w)}.ransom .c{background:var(--red);color:var(--w);outline:2px solid var(--w)}
+h1{margin:0;font-size:clamp(44px,9vw,92px);filter:drop-shadow(5px 5px 0 var(--ink))}
+.bio{background:var(--ink);padding:10px 14px;margin:14px 0 0;font-size:13px;line-height:1.5;transform:rotate(-1deg);max-width:420px}
+nav{position:absolute;left:5%;top:52%;width:min(440px,62%)}
+nav button{all:unset;display:block;cursor:pointer;position:relative;margin:2px 0;padding:6px 22px;font-family:'Anton',Impact,sans-serif;font-size:clamp(26px,5.2vw,44px);letter-spacing:.06em;color:var(--w);transform:skewX(-8deg) rotate(-2deg);transition:transform .15s}
+nav button .ransom{filter:drop-shadow(3px 3px 0 var(--ink))}
+nav button.on{background:var(--ink);transform:skewX(-8deg) rotate(-2deg) translateX(14px) scale(1.06);box-shadow:8px 0 0 var(--w)}
+nav button.on::after{content:"";position:absolute;right:-70px;top:50%;margin-top:-30px;border:30px solid transparent;border-left:44px solid var(--w);border-right:0;animation:nudge .6s infinite alternate steps(2)}
+@keyframes nudge{to{transform:translateX(10px)}}
+nav button:focus-visible{outline:3px solid var(--w);outline-offset:2px}
+.keys{position:absolute;left:0;bottom:calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:6px;font-size:11px;padding-left:10px}
+.keys b{background:var(--ink);padding:5px 9px;font-weight:400}
+.keys i{background:var(--w);color:var(--ink);font-style:normal;padding:1px 5px;margin-right:5px}
+.panel{position:absolute;inset:0;background:var(--ink);transform:translateX(105%) skewX(-10deg);transition:transform .35s cubic-bezier(.7,0,.2,1);z-index:5;overflow:auto;padding:70px 8% 90px}
+.panel.open{transform:none}
+.panel::before{content:"";position:absolute;inset:0 auto 0 0;width:14px;background:var(--red)}
+.panel h2{font-family:'Anton',Impact,sans-serif;font-size:clamp(40px,8vw,72px);margin:0 0 22px;background:var(--w);color:var(--ink);display:inline-block;padding:0 16px;transform:rotate(-2deg)}
+.item{background:var(--paper);color:var(--ink);margin:0 0 16px;padding:14px 18px;max-width:640px;border-left:10px solid var(--red);transform:rotate(-.6deg)}
+.item:nth-child(even){transform:rotate(.6deg);border-left-color:var(--ink)}
+.item h3{margin:0 0 4px;font-family:'Anton',Impact,sans-serif;font-size:24px;letter-spacing:.03em;font-weight:400}
+.item p{margin:0;font-size:14px;line-height:1.5}
+.bar{height:12px;background:var(--ink);margin-top:8px}.bar i{display:block;height:100%;background:var(--red)}
+.back{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:9;background:var(--red);color:var(--w);border:2px solid var(--w);font:16px 'Anton',Impact,sans-serif;letter-spacing:.08em;padding:8px 18px;cursor:pointer;display:none;transform:rotate(-3deg)}
+.back.show{display:block}
+.player{position:absolute;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:8;display:flex;align-items:center;gap:10px}
+.disc{flex:none;width:84px;height:84px;border-radius:50%;border:3px solid var(--w);position:relative;box-shadow:4px 4px 0 var(--ink);
+background:conic-gradient(transparent 0 40%,rgba(255,255,255,.22) 50%,transparent 60% 90%,rgba(255,255,255,.14) 95%,transparent),radial-gradient(circle,var(--paper) 0 5%,var(--red) 6% 24%,var(--ink) 25% 27%,transparent 28%),repeating-radial-gradient(circle,#111 0 2px,#262626 2px 4px);
+animation:spin 3.5s linear infinite;animation-play-state:paused}
+.player.on .disc{animation-play-state:running}
+@keyframes spin{to{transform:rotate(360deg)}}
+.song{background:var(--ink);padding:8px 12px;font-size:12px;line-height:1.45;transform:rotate(-1.5deg);max-width:210px}
+.song strong{display:block;font:400 20px/1.1 'Anton',Impact,sans-serif;letter-spacing:.03em}
+.song em{display:block;font-style:normal;color:#bbb}
+.pbtn{all:unset;cursor:pointer;margin:6px 6px 0 0;padding:3px 12px;background:var(--red);border:2px solid var(--w);font:15px 'Anton',Impact,sans-serif;letter-spacing:.06em}
+.pbtn:focus-visible{outline:3px solid var(--w);outline-offset:2px}
+@media(max-width:640px){
+.glass{width:100%;opacity:.28;clip-path:none}
+.title{width:88%;top:12%}nav{width:84%;top:50%}
+nav button.on::after{right:-48px;border-width:22px;border-left-width:32px;margin-top:-22px}
+.keys{display:none}.tag.tr{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="glass" aria-hidden="true"></div>
+  <div class="tag tl">PORTFOLIO // MASBOL</div>
+  <div class="tag tr">SUBANG · FULL-STACK DEVELOPER</div>
+  <div class="title">
+    <small>Lihat karya saya</small>
+    <h1 class="ransom" data-t="MASBOL" aria-label="Masbol"></h1>
+    <p class="bio">Masbol Project</p>
+  </div>
+  <nav id="menu" aria-label="Menu utama"></nav>
+  <div class="keys"><b><i>↑↓</i>Pilih</b><b><i>Enter</i>Buka</b><b><i>Esc</i>Kembali</b></div>
+
+  <section class="panel" id="p-projects"><h2>Projects</h2>
+    <div class="item"><h3>Toko Online Kopi</h3><p>Aplikasi e-commerce dengan keranjang, pembayaran, dan dashboard pesanan. React + Node.</p></div>
+    <div class="item"><h3>Aplikasi Catatan Keuangan</h3><p>Aplikasi mobile untuk mencatat pengeluaran harian dengan grafik mingguan.</p></div>
+    <div class="item"><h3>Landing Page Komunitas</h3><p>Halaman pendaftaran acara dengan animasi dan formulir yang ringan.</p></div>
+  </section>
+  <section class="panel" id="p-skills"><h2>Skills</h2>
+    <div class="item"><h3>JavaScript / TypeScript</h3><div class="bar"><i style="width:90%"></i></div></div>
+    <div class="item"><h3>React &amp; Next.js</h3><div class="bar"><i style="width:85%"></i></div></div>
+    <div class="item"><h3>Node.js &amp; Database</h3><div class="bar"><i style="width:75%"></i></div></div>
+    <div class="item"><h3>UI / UX Design</h3><div class="bar"><i style="width:70%"></i></div></div>
+  </section>
+  <section class="panel" id="p-about"><h2>About</h2>
+    <div class="item"><h3>Siapa saya</h3><p>Full-stack developer dari Subang. Suka membuat tampilan yang tidak biasa tanpa mengorbankan kecepatan dan kemudahan pakai.</p></div>
+    <div class="item"><h3>Cara kerja</h3><p>Mulai dari sketsa kasar, lalu bangun versi kecil yang bisa dicoba, dan perbaiki dari masukan nyata.</p></div>
+  </section>
+  <section class="panel" id="p-contact"><h2>Contact</h2>
+    <div class="item"><h3>Email</h3><p>halo@contoh.com</p></div>
+    <div class="item"><h3>Instagram</h3><p>@yephann</p></div>
+    <div class="item"><h3>GitHub</h3><p>github.com/masbol</p></div>
+  </section>
+  <div class="player" id="player">
+    <div class="disc" aria-hidden="true"></div>
+    <div class="song">
+      <strong>Heartbeat, Heartbreak</strong>
+      <em>Shihoko Hirata</em>
+      <em>Lirik &amp; komposisi: Reiko Tanaka</em>
+      <button class="pbtn" id="play">Putar</button><button class="pbtn" id="pick">Pilih lagu</button>
+    </div>
+    <audio id="au" loop></audio>
+    <input type="file" id="file" accept="audio/*" hidden>
+  </div>
+  <button class="back" id="back">Kembali</button>
+</div>
+<script>
+(function(){
+  var names=['Projects','Skills','About','Contact'],idx=0,open=null;
+  var menu=document.getElementById('menu'),back=document.getElementById('back');
+  function ransom(el,text,seed){
+    el.innerHTML='';var s=seed||3;
+    text.split('').forEach(function(ch){
+      s=(s*9301+49297)%233280;var r=s/233280;
+      var sp=document.createElement('span');sp.textContent=ch;
+      sp.className=r<.4?'a':r<.7?'b':'c';
+      sp.style.transform='rotate('+((r*8-4).toFixed(1))+'deg) translateY('+((r*6-3).toFixed(1))+'px)';
+      sp.style.fontSize=(0.85+r*0.3).toFixed(2)+'em';
+      el.appendChild(sp);
+    });
+  }
+  ransom(document.querySelector('h1'),'MASBOL',7);
+  names.forEach(function(n,i){
+    var b=document.createElement('button');
+    var w=document.createElement('span');w.className='ransom';
+    ransom(w,n.toUpperCase(),i*5+2);
+    b.appendChild(w);b.setAttribute('aria-label',n);
+    b.onmouseenter=function(){sel(i)};
+    b.onclick=function(){sel(i);go(i)};
+    menu.appendChild(b);
+  });
+  function sel(i){idx=(i+names.length)%names.length;[].forEach.call(menu.children,function(b,k){b.classList.toggle('on',k===idx)})}
+  function go(i){close();open=document.getElementById('p-'+names[i].toLowerCase());open.classList.add('open');back.classList.add('show')}
+  function close(){if(open){open.classList.remove('open');open=null}back.classList.remove('show')}
+  back.onclick=close;
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){close();return}
+    if(open)return;
+    if(e.key==='ArrowDown'){sel(idx+1);e.preventDefault()}
+    else if(e.key==='ArrowUp'){sel(idx-1);e.preventDefault()}
+    else if(e.key==='Enter'){go(idx)}
+  });
+  var au=document.getElementById('au'),pl=document.getElementById('player'),pb=document.getElementById('play'),fi=document.getElementById('file');
+  function state(){var on=!au.paused;pl.classList.toggle('on',on);pb.textContent=on?'Jeda':'Putar'}
+  var SONG_URL='heartbeat-heartbreak.mp3'; /* isi dengan link file lagu (mp3) yang kamu hosting sendiri, mis. 'heartbeat-heartbreak.mp3' */
+  var started=false;
+  if(SONG_URL){au.src=SONG_URL}
+  document.addEventListener('pointerdown',function(e){
+    if(started||!au.src||e.target.closest('.player'))return;
+    started=true;if(au.paused)au.play().catch(function(){});
+  });
+  au.onplay=au.onpause=state;
+  document.getElementById('pick').onclick=function(){fi.click()};
+  fi.onchange=function(){var f=fi.files[0];if(!f)return;au.src=URL.createObjectURL(f);au.play().catch(function(){})};
+  pb.onclick=function(){if(!au.src){fi.click();return}au.paused?au.play().catch(function(){}):au.pause()};
+  sel(0);
+})();
+</script>
+</body>
+</html>
