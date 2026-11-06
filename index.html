@@ -74,6 +74,12 @@ nav button.on::after{right:-48px;border-width:22px;border-left-width:32px;margin
 .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.72),rgba(0,0,0,.25) 70%,rgba(0,0,0,.1))}
 .glass{display:none}
 @media(prefers-reduced-motion:reduce){.bgv{display:none}}
+.gate{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.84);cursor:pointer;text-align:center;padding:20px}
+.gate b{display:inline-block;font:400 clamp(52px,10vw,110px)/1 'Anton',Impact,sans-serif;background:var(--w);color:var(--ink);padding:0 20px;transform:rotate(-3deg);box-shadow:8px 8px 0 var(--red)}
+.gate span{display:block;margin:26px auto 0;width:max-content;max-width:100%;font-size:clamp(16px,2.4vw,24px);background:var(--red);padding:8px 18px;transform:rotate(1.5deg);animation:blink 1.1s infinite alternate steps(2)}
+.gate.off{display:none}
+@keyframes blink{to{opacity:.35}}
+.disc{cursor:pointer;padding:0}
 </style>
 </head>
 <body>
@@ -112,16 +118,11 @@ nav button.on::after{right:-48px;border-width:22px;border-left-width:32px;margin
     <div class="item"><h3>GitHub</h3><p>github.com/masbol</p></div>
   </section>
   <div class="player" id="player">
-    <div class="disc" aria-hidden="true"></div>
-    <div class="song">
-      <strong>Heartbeat, Heartbreak</strong>
-      <em>Shihoko Hirata</em>
-      <em>Lirik &amp; komposisi: Reiko Tanaka</em>
-      <button class="pbtn" id="play">Putar</button><button class="pbtn" id="pick">Pilih lagu</button>
-    </div>
+    <button class="disc" id="play" aria-label="Putar atau jeda lagu"></button>
     <audio id="au" loop></audio>
     <input type="file" id="file" accept="audio/*" hidden>
   </div>
+  <div class="gate" id="gate" role="button" tabindex="0" aria-label="Masuk"><div><b>MASBOL</b><span>Sentuh layar untuk masuk</span></div></div>
   <button class="back" id="back">Kembali</button>
 </div>
 <script>
@@ -155,6 +156,7 @@ nav button.on::after{right:-48px;border-width:22px;border-left-width:32px;margin
   function close(){if(open){open.classList.remove('open');open=null}back.classList.remove('show')}
   back.onclick=close;
   document.addEventListener('keydown',function(e){
+    if(gate&&!gate.classList.contains('off')){enter();e.preventDefault();return}
     if(e.key==='Escape'){close();return}
     if(open)return;
     if(e.key==='ArrowDown'){sel(idx+1);e.preventDefault()}
@@ -162,7 +164,7 @@ nav button.on::after{right:-48px;border-width:22px;border-left-width:32px;margin
     else if(e.key==='Enter'){go(idx)}
   });
   var au=document.getElementById('au'),pl=document.getElementById('player'),pb=document.getElementById('play'),fi=document.getElementById('file');
-  function state(){var on=!au.paused;pl.classList.toggle('on',on);pb.textContent=on?'Jeda':'Putar'}
+  function state(){var on=!au.paused;pl.classList.toggle('on',on);pb.setAttribute('aria-label',on?'Jeda lagu':'Putar lagu')}
   var SONG_URL='heartbeat-heartbreak.mp3'; /* isi dengan link file lagu (mp3) yang kamu hosting sendiri, mis. 'heartbeat-heartbreak.mp3' */
   var started=false;
   if(SONG_URL){au.src=SONG_URL}
@@ -171,7 +173,10 @@ nav button.on::after{right:-48px;border-width:22px;border-left-width:32px;margin
     started=true;if(au.paused)au.play().catch(function(){});
   });
   au.onplay=au.onpause=state;
-  document.getElementById('pick').onclick=function(){fi.click()};
+  var gate=document.getElementById('gate');
+  function enter(){gate.classList.add('off');if(au.src&&au.paused)au.play().catch(function(){})}
+  gate.onclick=enter;
+  if(au.src){au.play().then(function(){gate.classList.add('off')}).catch(function(){})}else{gate.classList.add('off')}
   fi.onchange=function(){var f=fi.files[0];if(!f)return;au.src=URL.createObjectURL(f);au.play().catch(function(){})};
   pb.onclick=function(){if(!au.src){fi.click();return}au.paused?au.play().catch(function(){}):au.pause()};
   sel(0);
